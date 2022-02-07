@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ca8b3a81fb72d4aae5f5fca44ae733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startNum: 1
+  startNum: 10
   Creature: {fileID: 11510355608183017, guid: 1889bfbedf645f04ba9453afe7fdcd94, type: 3}
 --- !u!1 &705507993
 GameObject:
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc570cafb12f88c4683b31448cae6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalFood: 5
+  totalFood: 18
   Food: {fileID: 8886550270026897013, guid: 451e2c092a3019745b5930aebda9e294, type: 3}
 --- !u!4 &1155715374
 Transform:

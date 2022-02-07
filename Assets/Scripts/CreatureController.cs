@@ -16,6 +16,7 @@ public class CreatureController : MonoBehaviour
     
     // other variables
     public int state = 0;
+    public bool alive = true;
     public int foodEaten = 0;
     GameObject nearObject; //declared here so all functions can access it
     
@@ -29,8 +30,8 @@ public class CreatureController : MonoBehaviour
         energyUsed = 0;
         
         
-        sense = Random.Range(10, 20);
-        speed = Random.Range(2, 5);
+        sense = Random.Range(15, 30);
+        speed = Random.Range(3, 5);
         agent.speed = speed;
        
     }
@@ -38,7 +39,7 @@ public class CreatureController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(energyUsed);
+        
         if (Input.GetKeyDown("space")) 
         {
             if (foodEaten >= 2)
@@ -53,70 +54,75 @@ public class CreatureController : MonoBehaviour
             // energy timer stopwatch variable back to zero
         }
         
-        if (Timer.timerOn == false && Timer.endOfDay == true) 
+        if (Timer.timerOn == false && Timer.endOfDay == true && state != 4) 
         {
             state = 3;
             
         }
         if (energyTimer == true) 
         {
-            energyUsed = energyUsed += Time.deltaTime;
+            energyUsed = energyUsed += (Time.deltaTime * speed);
+            this.name = energyUsed.ToString();
             //Debug.Log(energyUsed);
             //multiply by speed variable later
 
         }
-        if (energyUsed >= 8) {            
-            Destroy(this);
-            Destroy(gameObject);
-            // if creatures run out of energy, they just die
+        if (energyUsed >= 44) {
+            alive = false;            
 
         }
         
+
         if (state == 0)
         {
             if (Timer.timerOn == true) {
             findFood();
-            }
-            
-            
-            // flip energy timer switch on
+            }    
         }
-        if (state == 1) 
+        else if (state == 1) 
         {
             energyTimer = true;
+            //Debug.Log(energyTimer);
             // if destination no longer active --> set state back to 0
             if (nearObject == null) {
                 state = 0;
             }
         }
-        if (state == 2)    
+        else if (state == 2)    
         {
+            
             Wander();
             energyTimer = true;
+            
+            
         }
-        if (state == 3)
+        else if (state == 3)
         {
-            energyTimer = true;
-            
+                        
             returnToEdge();
-            
+            energyTimer = true;
             if (agent.transform.position.x >= 24 || agent.transform.position.x <= -24 || agent.transform.position.z >= 24 || agent.transform.position.z <= -24) {
                 state = 4;
             }
+
             if (Timer.endOfDay)
             {
                 if (foodEaten == 0)
                 {
-                    Destroy(gameObject);
+                    alive = false;
                 }
                        
             }
             
         }
-        if (state == 4) {
+        else if (state == 4) {
             // flip energy timer switch off
            energyTimer = false;
-            
+           //Debug.Log(energyTimer);
+           
+        }
+        if (alive == false){
+            Destroy(gameObject);
         }
 
         
@@ -129,10 +135,10 @@ public class CreatureController : MonoBehaviour
             Destroy(other.gameObject);
             foodEaten++;
             energyTimer = false;
+            
             if (foodEaten >= 2)
             {
                 state = 3;
-               // Debug.Log(state);
                 //return to edge
             } else
             {
