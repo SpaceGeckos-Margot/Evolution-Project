@@ -144,7 +144,20 @@ public class CreatureController : MonoBehaviour
             foodEaten++;
             energyTimer = false;
             
-            if (foodEaten >= 2)
+            
+            
+        } 
+        /* if(other.gameObject.CompareTag("Creature")) 
+        {
+            if (other.gameObject.GetComponent<CreatureController>().s <= this.s) 
+            {      
+                Destroy(other.gameObject);
+                other.gameObject.GetComponent<CreatureController>().alive = false;
+                foodEaten = foodEaten += 2;
+                energyTimer = false;
+            }
+        } */
+        if (foodEaten >= 2)
             {
                 state = 3;
                 //return to edge
@@ -152,13 +165,6 @@ public class CreatureController : MonoBehaviour
             {
                 state = 0;
             }
-            
-        }
-        if(other.gameObject.CompareTag("Creature")) {
-            // compare size
-            // if x amount smaller, destroy other.gameObject
-            // increment foodEaten by 2
-        }
 
     }
 
@@ -179,11 +185,33 @@ public class CreatureController : MonoBehaviour
                 
                 break;
             }
+            
+            
+        }
+        if (state != 1)
+        {   
+            for (int i = 0; i < nearObjects.Length; i++) // loops over objects, not foreach because nearobject has already been defined
+            {
+                nearObject = nearObjects[i].gameObject; // nearobjects[] is a collider array, this grabs the gameobject from said collider
+                if (nearObject.CompareTag("Creature"))
+                {   
+                    // creature size check
+                    if (nearObject.GetComponent<CreatureController>().s <= this.s) 
+                    {      
+                        agent.SetDestination(nearObject.transform.position); 
+                        state = 1;
+                    }
+                
+                    break;
+                }
+            
+            
+            }
             if (state != 1)
             {
                 state = 2;
             }
-            
+                
         }
         
     }
