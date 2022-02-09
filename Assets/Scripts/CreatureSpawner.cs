@@ -39,7 +39,10 @@ public class CreatureSpawner : MonoBehaviour
                 Vector3 spawnHere = new Vector3(x2, 2, z2);
                 myCreature.position = spawnHere;
               
-            }    
+            }
+                
         }
+
+        
     }
 }

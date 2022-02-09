@@ -9,6 +9,8 @@ public class CreatureController : MonoBehaviour
     // creature stats 
     public float sense;
     public float speed;
+    public float s;
+    public Vector3 size;
 
     // energy timer
     public bool energyTimer;
@@ -29,11 +31,17 @@ public class CreatureController : MonoBehaviour
         foodEaten = 0;
         energyUsed = 0;
         
+        if (Timer.dayCount == 0){
+            sense = Random.Range(15f, 30f);
+            speed = Random.Range(3f, 5f);
+            agent.speed = speed;
+            s = Random.Range(2f, 3.5f);
+            size = new Vector3(s, s, s);    
+            this.transform.localScale = size;
+        }
         
-        sense = Random.Range(15, 30);
-        speed = Random.Range(3, 5);
-        agent.speed = speed;
-       
+        
+
     }
 
     // Update is called once per frame
@@ -61,13 +69,13 @@ public class CreatureController : MonoBehaviour
         }
         if (energyTimer == true) 
         {
-            energyUsed = energyUsed += (Time.deltaTime * speed);
+            energyUsed = energyUsed += (Time.deltaTime * speed * (size.x/2));
             this.name = energyUsed.ToString();
             //Debug.Log(energyUsed);
             //multiply by speed variable later
 
         }
-        if (energyUsed >= 44) {
+        if (energyUsed >= 80) {
             alive = false;            
 
         }
@@ -146,6 +154,11 @@ public class CreatureController : MonoBehaviour
             }
             
         }
+        if(other.gameObject.CompareTag("Creature")) {
+            // compare size
+            // if x amount smaller, destroy other.gameObject
+            // increment foodEaten by 2
+        }
 
     }
 
@@ -222,8 +235,16 @@ public class CreatureController : MonoBehaviour
     void Mitosis() 
     {    
         var newCreature = Instantiate(this.gameObject);
-        newCreature.GetComponent<CreatureController>().sense = sense * Random.Range(.95f, 1.05f);
-        newCreature.GetComponent<CreatureController>().speed = speed * Random.Range(.95f, 1.05f);
+        newCreature.GetComponent<CreatureController>().sense = this.sense * Random.Range(.95f, 1.05f);
+
+        newCreature.GetComponent<CreatureController>().speed = this.speed * Random.Range(.95f, 1.05f);
+        newCreature.GetComponent<NavMeshAgent>().speed = newCreature.GetComponent<CreatureController>().speed;
+
+        newCreature.GetComponent<CreatureController>().s = this.s * Random.Range(.95f, 1.05f);
+        newCreature.GetComponent<CreatureController>().size = new Vector3(s, s, s);
+        newCreature.GetComponent<CreatureController>().transform.localScale = size;
+        
+        
     }
     
 }

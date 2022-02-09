@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5652454271821887233}
   m_Layer: 0
   m_Name: Creature
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,5 +134,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sense: 0
   speed: 0
+  s: 0
+  size: {x: 0, y: 0, z: 0}
+  energyTimer: 0
+  energyUsed: 0
   state: 0
+  alive: 1
   foodEaten: 0

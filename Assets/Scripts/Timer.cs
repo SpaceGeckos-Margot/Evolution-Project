@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
     public static bool timerOn;
     public static float time;
     public static bool endOfDay;
+    public static float dayCount = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +17,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space")){
+        if (Input.GetKeyDown("space")){    
             time = 0;
             timerOn = true;
             endOfDay = false;
             //Debug.Log("space");
+            dayCount += 1;
         }
         if (timerOn == true) {
 
