@@ -20,6 +20,7 @@ public class CreatureController : MonoBehaviour
     public int state = 0;
     public bool alive = true;
     public int foodEaten = 0;
+    public bool creatureEaten = false;
     GameObject nearObject; //declared here so all functions can access it
     
     // Start is called before the first frame update
@@ -47,6 +48,7 @@ public class CreatureController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(state);
         
         if (Input.GetKeyDown("space")) 
         {
@@ -129,6 +131,13 @@ public class CreatureController : MonoBehaviour
            //Debug.Log(energyTimer);
            
         }
+        else if (state == 5) {
+            findCreature();
+           
+        }
+        if (alive == false){
+            Destroy(gameObject);
+        }
         if (alive == false){
             Destroy(gameObject);
         }
@@ -147,16 +156,21 @@ public class CreatureController : MonoBehaviour
             
             
         } 
-        /* if(other.gameObject.CompareTag("Creature")) 
+        if( other.gameObject.CompareTag("Creature")) 
         {
-            if (other.gameObject.GetComponent<CreatureController>().s <= this.s) 
-            {      
-                Destroy(other.gameObject);
-                other.gameObject.GetComponent<CreatureController>().alive = false;
-                foodEaten = foodEaten += 2;
-                energyTimer = false;
+            if (Timer.snackTime == true && creatureEaten == false)
+            {
+                if (other.gameObject.GetComponent<CreatureController>().s <= this.s) 
+                {      
+                    Destroy(other.gameObject);
+                    other.gameObject.GetComponent<CreatureController>().alive = false;
+                    foodEaten = foodEaten += 2;
+                    energyTimer = false;
+                    creatureEaten = true;
+                    
+                }
             }
-        } */
+        }
         if (foodEaten >= 2)
             {
                 state = 3;
@@ -189,7 +203,22 @@ public class CreatureController : MonoBehaviour
             
         }
         if (state != 1)
-        {   
+        {
+            if (Timer. snackTime == true && creatureEaten == false) {
+                state = 5;
+            } else {
+                state = 2;
+            }
+            
+
+        }
+                
+        
+        
+    }
+    void findCreature() 
+    {   
+        Collider[] nearObjects = Physics.OverlapSphere(agent.transform.position, sense * 1.3f);
             for (int i = 0; i < nearObjects.Length; i++) // loops over objects, not foreach because nearobject has already been defined
             {
                 nearObject = nearObjects[i].gameObject; // nearobjects[] is a collider array, this grabs the gameobject from said collider
@@ -212,8 +241,6 @@ public class CreatureController : MonoBehaviour
                 state = 2;
             }
                 
-        }
-        
     }
     
 

@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc570cafb12f88c4683b31448cae6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalFood: 18
+  totalFood: 10
   Food: {fileID: 8886550270026897013, guid: 451e2c092a3019745b5930aebda9e294, type: 3}
 --- !u!4 &1155715374
 Transform:
