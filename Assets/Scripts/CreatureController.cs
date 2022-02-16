@@ -31,6 +31,7 @@ public class CreatureController : MonoBehaviour
         state = 0;
         foodEaten = 0;
         energyUsed = 0;
+
         
         if (Timer.dayCount == 0){
             sense = Random.Range(15f, 30f);
@@ -39,6 +40,9 @@ public class CreatureController : MonoBehaviour
             s = Random.Range(2f, 3.5f);
             size = new Vector3(s, s, s);    
             this.transform.localScale = size;
+            Counter.totalSpeed += speed;
+            Counter.totalCreatures++;
+            
         }
         
         
@@ -48,7 +52,7 @@ public class CreatureController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(state);
+        
         
         if (Input.GetKeyDown("space")) 
         {
@@ -73,8 +77,6 @@ public class CreatureController : MonoBehaviour
         {
             energyUsed = energyUsed += (Time.deltaTime * speed * (size.x/2));
             this.name = energyUsed.ToString();
-            //Debug.Log(energyUsed);
-            //multiply by speed variable later
 
         }
         if (energyUsed >= 80) {
@@ -184,8 +186,6 @@ public class CreatureController : MonoBehaviour
 
     void findFood()
     {
-        
-        
         Collider[] nearObjects = Physics.OverlapSphere(agent.transform.position, sense);
 
         for (int i = 0; i < nearObjects.Length; i++) // loops over objects, not foreach because nearobject has already been defined
@@ -219,27 +219,27 @@ public class CreatureController : MonoBehaviour
     void findCreature() 
     {   
         Collider[] nearObjects = Physics.OverlapSphere(agent.transform.position, sense * 1.3f);
-            for (int i = 0; i < nearObjects.Length; i++) // loops over objects, not foreach because nearobject has already been defined
-            {
-                nearObject = nearObjects[i].gameObject; // nearobjects[] is a collider array, this grabs the gameobject from said collider
-                if (nearObject.CompareTag("Creature"))
-                {   
+        for (int i = 0; i < nearObjects.Length; i++) // loops over objects, not foreach because nearobject has already been defined
+        {
+            nearObject = nearObjects[i].gameObject; // nearobjects[] is a collider array, this grabs the gameobject from said collider
+            if (nearObject.CompareTag("Creature"))
+            {   
                     // creature size check
-                    if (nearObject.GetComponent<CreatureController>().s <= this.s) 
-                    {      
-                        agent.SetDestination(nearObject.transform.position); 
-                        state = 1;
-                    }
-                
-                    break;
+                if (nearObject.GetComponent<CreatureController>().s <= this.s) 
+                {      
+                    agent.SetDestination(nearObject.transform.position); 
+                    state = 1;
                 }
+                
+                break;
+            }
             
             
-            }
-            if (state != 1)
-            {
-                state = 2;
-            }
+        }
+        if (state != 1)
+        {
+            state = 2;
+        }
                 
     }
     
@@ -294,6 +294,9 @@ public class CreatureController : MonoBehaviour
 
         newCreature.GetComponent<CreatureController>().speed = this.speed * Random.Range(.95f, 1.05f);
         newCreature.GetComponent<NavMeshAgent>().speed = newCreature.GetComponent<CreatureController>().speed;
+        Counter.totalSpeed += newCreature.GetComponent<CreatureController>().speed;
+        Counter.totalCreatures++;
+
 
         newCreature.GetComponent<CreatureController>().s = this.s * Random.Range(.95f, 1.05f);
         newCreature.GetComponent<CreatureController>().size = new Vector3(s, s, s);
