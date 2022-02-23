@@ -40,10 +40,17 @@ public class CreatureController : MonoBehaviour
             s = Random.Range(2f, 3.5f);
             size = new Vector3(s, s, s);    
             this.transform.localScale = size;
-            Counter.totalSpeed += speed;
+
+            Counter.totalSpeed = Counter.totalSpeed + speed;
+            //Debug.Log(Counter.totalSpeed);
+            Counter.totalSize = Counter.totalSize + s;
+            //Debug.Log(Counter.totalSize);
+            Counter.totalSense = Counter.totalSense + sense;
+            //Debug.Log(Counter.totalSense);
             Counter.totalCreatures++;
-            
+            Debug.Log(Counter.totalCreatures);
         }
+       
         
         
 
@@ -138,12 +145,17 @@ public class CreatureController : MonoBehaviour
            
         }
         if (alive == false){
+            Counter.totalSpeed = Counter.totalSpeed - speed;
+            //Debug.Log(Counter.totalSpeed);
+            Counter.totalSize = Counter.totalSize - s;
+            //Debug.Log(Counter.totalSize);
+            Counter.totalSense = Counter.totalSense - sense;
+            //Debug.Log(Counter.totalSense);
+            Counter.totalCreatures = Counter.totalCreatures - 1;
+            Debug.Log(Counter.totalCreatures);
             Destroy(gameObject);
         }
-        if (alive == false){
-            Destroy(gameObject);
-        }
-
+        
         
     }
     private void OnTriggerEnter(Collider other)
@@ -301,8 +313,14 @@ public class CreatureController : MonoBehaviour
         newCreature.GetComponent<CreatureController>().s = this.s * Random.Range(.95f, 1.05f);
         newCreature.GetComponent<CreatureController>().size = new Vector3(s, s, s);
         newCreature.GetComponent<CreatureController>().transform.localScale = size;
-        
-        
+        Counter.totalSpeed = Counter.totalSpeed + newCreature.GetComponent<CreatureController>().speed;
+        //Debug.Log(Counter.totalSpeed);
+        Counter.totalSize = Counter.totalSize + newCreature.GetComponent<CreatureController>().s;
+        //Debug.Log(Counter.totalSize);
+        Counter.totalSense = Counter.totalSense + newCreature.GetComponent<CreatureController>().sense;
+        //Debug.Log(Counter.totalSense);
+        Counter.totalCreatures++;
+        Debug.Log(Counter.totalCreatures);
     }
     
 }
