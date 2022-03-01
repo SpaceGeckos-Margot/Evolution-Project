@@ -13,6 +13,7 @@ public class Timer : MonoBehaviour
     public static float meanSpeed;
     public static float meanSize;
     public static float meanSense;
+    public static bool newMean;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI sizeText;
     public TextMeshProUGUI senseText;
@@ -31,14 +32,14 @@ public class Timer : MonoBehaviour
             time = 0;
             timerOn = true;
             endOfDay = false;
+            Counter.totalCreatures = 0;
+            Counter.totalSpeed = 0;
+            Counter.totalSize = 0;
+            Counter.totalSense = 0;
+
             //Debug.Log("space");
             dayCount += 1;
-            meanSpeed = Counter.totalSpeed / Counter.totalCreatures;
-            meanSize = Counter.totalSize / Counter.totalCreatures;
-            meanSense = Counter.totalSense / Counter.totalCreatures;
-            speedText.text = "Average Speed: " + meanSpeed.ToString();
-            sizeText.text = "Average Size: " + meanSize.ToString();
-            senseText.text = "Average Sense: " + meanSense.ToString();
+            
         }
         if (timerOn == true) 
         {
@@ -46,16 +47,31 @@ public class Timer : MonoBehaviour
             time = time += Time.deltaTime;
            // Debug.Log(time);
         }
+        if (time >= 0.5 && time <= 1)
+        {
+            newMean = true;
+        }
+        if (time >= 1.1)
+        {
+            meanSpeed = Counter.totalSpeed / Counter.totalCreatures;
+            meanSize = Counter.totalSize / Counter.totalCreatures;
+            meanSense = Counter.totalSense / Counter.totalCreatures;
+            speedText.text = "Average Speed: " + meanSpeed.ToString();
+            sizeText.text = "Average Size: " + meanSize.ToString();
+            senseText.text = "Average Sense: " + meanSense.ToString();
+            newMean = false;
+        }
 
-        if (time >= 3 && time <= 9) 
+
+        /*if (time >= 3 && time <= 9) 
         {
             snackTime = true;
         } else 
         {
             snackTime = false;
         }
-
-        if (time >= 20)
+        */
+        if (time >= 15)
         {
             timerOn = false;
             endOfDay = true;
